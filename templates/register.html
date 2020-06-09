@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Recipe Blog</title>
+	</head>
+
+	<body>
+		
+		<form action="/register" method="post">
+			{{ form.csrf_token }}
+			
+			<h1>Create Your Account</h1>
+			
+			{{ form.username(placeholder="Username") }}
+			<ul>
+				{% for error in form.username.errors %}
+					<li>{{ error }}</li>
+				{% endfor %}
+			</ul>
+			
+			{{ form.email(placeholder="Email") }}
+			<ul>
+				{% for error in form.email.errors %}
+					<li>{{ error }}</li>
+				{% endfor %}
+			</ul>
+			
+			{{ form.password(placeholder="Password") }}
+			<ul>
+				{% for error in form.password.errors %}
+					<li>{{ error }}</li>
+				{% endfor %}
+			</ul>
+			
+			{{ form.confirm(placeholder="Confirm Password") }}
+			<ul>
+				{% for error in form.confirm.errors %}
+					<li>{{ error }}</li>
+				{% endfor %}
+			</ul>
+			
+			<button type="submit" id="button">Continue</button>
+			
+			<a href="/login">
+				Already have an account? Sign in.
+			</a>
+		</form>
+
+	</body>
+</html>
