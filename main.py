@@ -96,12 +96,13 @@ def edit_profile():
 	if form.validate_on_submit():
 		# get user info and save it
 		user.username = request.form["username"]
+		session["USERNAME"] = user.username
 		if(request.form["password"] != ''):
 			user.password = User.hash_password(request.form["password"])
 
 		user.save()
 
-		return redirect("/tasks")
+		return redirect("/")
 
 	# template edit_profile form
 	return render_template("edit_profile.html", form=form, user=user)

@@ -2,7 +2,7 @@ from flask import request
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, validators
 from wtforms.fields.html5 import EmailField, DateField
-from wtforms.validators import InputRequired, EqualTo, Length, NoneOf, ValidationError
+from wtforms.validators import InputRequired, EqualTo, Length, NoneOf, ValidationError, Optional
 
 from user import User
 
@@ -21,7 +21,7 @@ class RegistrationForm(FlaskForm):
 class EditProfileForm(FlaskForm):
 	username = StringField("username", [InputRequired()])
 	email = EmailField("email", [InputRequired()])
-	password = PasswordField("password", [Length(min=8, message="Password must be at least 8 characters!")])
+	password = PasswordField("password", [Optional(), Length(min=8, message="Password must be at least 8 characters!")])
 	confirm = PasswordField("confirm", [EqualTo("password", message="Passwords must match!")])
 
 class LoginForm(FlaskForm):
