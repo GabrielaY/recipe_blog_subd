@@ -1,5 +1,6 @@
 from flask import request
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired
 from wtforms import StringField, PasswordField, SelectField, validators
 from wtforms.fields.html5 import EmailField, DateField
 from wtforms.validators import InputRequired, EqualTo, Length, NoneOf, ValidationError, Optional
@@ -25,3 +26,17 @@ class EditProfileForm(FlaskForm):
 class LoginForm(FlaskForm):
 	username = StringField("username", [InputRequired(message="Username is required!")])
 	password = PasswordField("password", [InputRequired(message="Password is required"), check_password])
+
+class CreateRecipeForm(FlaskForm):
+	name = StringField("name", [InputRequired(message="Recipe name is required!")])
+	description = StringField("description", [InputRequired(message = "You must add a description to your recipe!")])
+	instructions = StringField("instructions", [InputRequired(message = "You must add instructions to your recipe!")])
+	category_name = SelectField('category', choices=[('apetizer', 'Apetizer'), ('dessert', 'Dessert'), ('soup', 'Soup')])
+	image = FileField('image')
+	special_diet = SelectField('special_diet', choices=[('no_special_diet', 'No special diet'), ('vegan', 'Vegan'), ('vegeterian','Vegeterian')])
+
+class EditRecipeForm(FlaskForm):
+	name = StringField("name", [InputRequired(message="Recipe name is required!")])
+	description = StringField("description", [InputRequired(message = "You must add a description to your recipe!")])
+	instructions = StringField("instructions", [InputRequired(message = "You must add instructions to your recipe!")])
+	image = FileField('image')

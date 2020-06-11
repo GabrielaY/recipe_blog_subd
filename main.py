@@ -6,8 +6,11 @@ import os
 
 # imports from .py files
 from user import User
-from form_config import check_password, RegistrationForm, LoginForm, EditProfileForm
+from recipe import Recipe
+from form_config import check_password, RegistrationForm, LoginForm, EditProfileForm, CreateRecipeForm
 
+
+UPLOAD_FOLDER = "./static/images/"
 # app config
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)
@@ -108,3 +111,63 @@ def edit_profile():
 
 	# template edit_profile form
 	return render_template("edit_profile.html", form=form, user=user)
+
+@app.route("/createRecipe", methods=["GET", "POST"])
+@require_login
+def create_recipe():
+	form = CreateRecipeForm()
+
+	# if form is valid
+	if form.validate_on_submit():
+
+		image = request.files["image"]
+		path = os.path.join(UPLOAD_FOLDER, session.get("USERNAME"))
+
+		# Check if path exists and create one if it doesn"t
+		if not os.path.exists(path):
+			os.makedirs(path)
+
+		image.save(os.path.join(path, "KOZUNAK"))
+
+		values = (
+			None,
+			session.get("USERNAME"),
+			request.form["name"],
+			request.form["description"],
+			request.form["instructions"],
+			request.form["category_name"],
+			"static/images/" + request.form["name"],
+			request.form["special_diet"]
+		)
+		Recipe(*values).create()
+
+		# get the user and put him in the session
+		return redirect("/")
+
+	# template the registration form
+	return render_template("create_recipe.html", form=form)
+
+@app.route("/editRecipe/<id>", methods=["GET", "POST"])
+@require_login
+def edit_recipe(id):
+	form = EditRecipeForm()
+
+	recipe = Recipe.find_by_id(id)
+
+	# set default username
+	form.name.data = recipe.name
+
+	# if form is valid
+	if form.validate_on_submit():
+		# get user info and save it
+		recipe.name = request.form["name"]
+		recipe.description = request.form["description"]
+		recipe.instructions = request.form["instructions"]
+		
+		recipe.save()
+
+		return redirect("/")
+
+	# template edit_profile form
+	return render_template("edit_recipe.html", form=form, recipe=recipe)
+	
