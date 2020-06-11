@@ -25,7 +25,7 @@ def require_login(func):
 # main page
 @app.route("/")
 def main_page():
-	return render_template("index.html")
+	return render_template("index.html", signed_in = session.get("SIGNED_IN"))
 
 # register page
 @app.route("/register", methods=["GET", "POST"])

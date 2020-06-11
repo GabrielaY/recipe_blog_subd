@@ -18,9 +18,9 @@ class User:
 	# update user info
 	def save(self):
 		with DB() as db:
-			values = (self.username, self.password, self.id)
+			values = (self.password, self.username)
 			db.execute(
-				'''UPDATE users SET username = ?, password = ? WHERE id = ?''', values)
+				'''UPDATE users SET password = ? WHERE username = ?''', values)
 
 	# find user by email
 	@staticmethod

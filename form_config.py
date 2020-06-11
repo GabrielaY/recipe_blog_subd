@@ -23,5 +23,5 @@ class EditProfileForm(FlaskForm):
 	confirm = PasswordField("confirm", [EqualTo("password", message="Passwords must match!")])
 
 class LoginForm(FlaskForm):
-	username = StringField("username", [InputRequired(message="Email is required!")])
+	username = StringField("username", [InputRequired(message="Username is required!")])
 	password = PasswordField("password", [InputRequired(message="Password is required"), check_password])

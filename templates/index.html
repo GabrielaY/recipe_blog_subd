@@ -9,8 +9,12 @@
 	</head>
 
 	<body>
+		{% if signed_in == false %}
 		<a href="/login">Sign in</a>
 		<a href="/register">Create an Account</a>
-		<a href="/edit">Edit Profile</a>
+		{% else %}
+			<a href="/edit">Edit Profile</a>
+			<a href="/logout">Logout</a>
+		{% endif %}
 	</body>
 </html>
