@@ -7,7 +7,7 @@ import os
 # imports from .py files
 from user import User
 from recipe import Recipe
-from form_config import check_password, RegistrationForm, LoginForm, EditProfileForm, CreateRecipeForm
+from form_config import check_password, RegistrationForm, LoginForm, EditProfileForm, CreateRecipeForm, EditRecipeForm
 
 
 UPLOAD_FOLDER = "./static/images/"
@@ -156,6 +156,8 @@ def edit_recipe(id):
 
 	# set default username
 	form.name.data = recipe.name
+	form.description.data = recipe.description
+	form.instructions.data = recipe.instructions
 
 	# if form is valid
 	if form.validate_on_submit():

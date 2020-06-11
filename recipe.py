@@ -22,9 +22,9 @@ class Recipe:
 	# update recipe info
 	def save(self):
 		with DB() as db:
-			values = (self.name, self.description, self.category_name, self.image_path, self.id)
+			values = (self.name, self.description, self.instructions, self.image_path, self.id)
 			db.execute(
-				'''UPDATE recipes SET name = ?, description = ?, category_name = ?, image_path = ? WHERE id = ?''', values)
+				'''UPDATE recipes SET name = ?, description = ?, instructions = ?, image_path = ? WHERE id = ?''', values)
 
 	# find recipe by id
 	@staticmethod
