@@ -12,6 +12,11 @@ from form_config import check_password, RegistrationForm, LoginForm, EditProfile
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)
 
+@app.before_first_request
+def function_to_run_only_once():
+	session["USERNAME"] = None
+	session["SIGNED_IN"] = False
+
 # require login config
 def require_login(func):
 	@wraps(func)

@@ -19,7 +19,7 @@ conn.cursor().execute('''
 		owner TEXT NOT NULL,
 		name TEXT NOT NULL,
 		description TEXT,
-		instructions TEXT,
+		instructions TEXT NOT NULL,
 		category_name TEXT NOT NULL,
 		image_path TEXT NOT NULL,
 		special_diet TEXT,
