@@ -29,7 +29,7 @@ class User:
 			return None
 		with DB() as db:
 			row = db.execute(
-				'''SELECT * FROM users WHERE username = ?''', (username)).fetchone()
+				'''SELECT * FROM users WHERE username = ?''', (username,)).fetchone()
 			if row:
 				return User(*row)
 
