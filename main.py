@@ -36,9 +36,7 @@ def register():
 	if form.validate_on_submit():
 		# get value and create user
 		values = (
-			None,
 			request.form["username"],
-			request.form["email"],
 			User.hash_password(request.form["password"])
 		)
 		User(*values).create()
@@ -88,9 +86,8 @@ def edit_profile():
 	# get user, whose profile will be edited
 	user = User.find_by_username(session.get("USERNAME"))
 
-	# set default username and email
+	# set default username
 	form.username.data = user.username
-	form.email.data = user.email
 
 	# if form is valid
 	if form.validate_on_submit():

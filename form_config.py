@@ -14,13 +14,11 @@ def check_password(form, password):
 
 class RegistrationForm(FlaskForm):
 	username = StringField("username", [InputRequired()])
-	email = EmailField("email", [InputRequired()])
 	password = PasswordField("password", [InputRequired(), Length(min=8, message="Password must be at least 8 characters!")])
 	confirm = PasswordField("confirm", [EqualTo("password", message="Passwords must match!")])
 
 class EditProfileForm(FlaskForm):
 	username = StringField("username", [InputRequired()])
-	email = EmailField("email", [InputRequired()])
 	password = PasswordField("password", [Optional(), Length(min=8, message="Password must be at least 8 characters!")])
 	confirm = PasswordField("confirm", [EqualTo("password", message="Passwords must match!")])
 
