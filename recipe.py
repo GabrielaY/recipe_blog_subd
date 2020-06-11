@@ -37,10 +37,20 @@ class Recipe:
 
 	# find recipes by category
 	@staticmethod
-	def find_by_category(category):
+	def find_by_category(category_name):
 		with DB() as db:
 			rows = db.execute(
 				'SELECT * FROM recipes WHERE category_name = ?',
-				(category.name,)
+				(category_name,)
 			).fetchall()
-			return [Game(*row) for row in rows]
+			return [Recipe(*row) for row in rows]
+
+	# find recipes by special diet (vegeterian or vegan)
+	@staticmethod
+	def find_by_diet(diet_name):
+		with DB() as db:
+			rows = db.execute(
+				'SELECT * FROM recipes WHERE special_diet = ?',
+				(diet_name,)
+			).fetchall()
+			return [Recipe(*row) for row in rows]
