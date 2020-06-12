@@ -33,5 +33,5 @@ class ratings:
 	def avg_rates(self):
         with DB() as db:
         	values = (self.recipe_id)
-            rows = db.execute('SELECT AVG(rating) WHERE recipe_id = ?', values).fetchone()
-            return round(rating, 2)
+            rating_row = db.execute('SELECT AVG(rating) WHERE recipe_id = ?', values).fetchone()
+            return round(rating_row[0], 2)

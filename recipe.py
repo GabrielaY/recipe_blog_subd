@@ -65,3 +65,12 @@ class Recipe:
 			''',(ingredient_name,)
 			).fetchall()
 			return [Recipe(*row) for row in rows]
+
+	# get average rate for recipe
+	def calc_avg_rate(self):
+		rating = 0
+		with DB() as db:
+			values = (self.id,)
+			rating_row = db.execute('SELECT AVG(rating) FROM ratings WHERE recipe_id = ?', values).fetchone()
+
+			return rating_row[0]
