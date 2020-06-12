@@ -32,25 +32,8 @@ conn.cursor().execute('''
 conn.cursor().execute('''
 
 
-	CREATE TABLE IF NOT EXISTS recipes (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		owner TEXT NOT NULL,
-		name TEXT NOT NULL,
-		description TEXT,
-		instructions TEXT,
-		category_name TEXT NOT NULL,
-		image_path TEXT NOT NULL,
-		special_diet TEXT,
-		UNIQUE(owner, name),
-		FOREIGN KEY(owner) REFERENCES users(username)
-
-	)
-	
-''')
-conn.cursor().execute('''
-
-
 	CREATE TABLE IF NOT EXISTS ingredients (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			recipe_id INTEGER NOT NULL,
 			name TEXT NOT NULL,
 			quantity FLOAT(2, 1) NOT NULL,
