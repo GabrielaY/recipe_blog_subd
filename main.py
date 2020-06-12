@@ -172,4 +172,13 @@ def edit_recipe(id):
 
 	# template edit_profile form
 	return render_template("edit_recipe.html", form=form, recipe=recipe)
+
+@app.route("/finfByCategory/<name>", methods=["GET", "POST"])
+def find_recipe_by_category(name):
+
+	return render_template("recipes.html", recipes=Recipe.find_by_category(name))
 	
+@app.route("/finfByIngredient/<name>", methods=["GET", "POST"])
+def find_recipe_by_ingredient(name):
+
+	return render_template("recipes.html", recipes=Recipe.find_by_ingredient(name))

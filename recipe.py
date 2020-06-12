@@ -58,10 +58,10 @@ class Recipe:
 	# find recipes by ingredient
 	@staticmethod
 	def find_by_ingredient(ingredient_name):
-		ingredient_name = "%" + ingredient_name + "%"
 		with DB() as db:
-			rows = db.execute(
-				'PRAGMA case_sensitive_like = false;',
-				'SELECT r.* FROM recipes as r inner join ingredients as i on r.id == i.recipe_id and i.name LIKE ingredient_name',
+			ingredient_name = "%" + ingredient_name + "%"
+			rows = db.execute('''
+				SELECT recipes.* FROM recipes JOIN ingredients  ON recipes.id = ingredients.recipe_id and ingredients.name LIKE ?;
+			''',(ingredient_name,)
 			).fetchall()
 			return [Recipe(*row) for row in rows]
