@@ -1,9 +1,7 @@
 var numberOfIngredients = 1;
 
 function setNumberOfIngredients() {
-	document.getElementById("number_of_ingredients").style.display = "none";
 	document.getElementById("number_of_ingredients").value = numberOfIngredients;
-	console.log(document.getElementById("number_of_ingredients").value);
 }
 
 function addIngredient(event) {
@@ -38,7 +36,7 @@ function addIngredient(event) {
 
 	// units array
 	var database_units = ["tbsp", "tsp", "cup", "pinch", "l", "ml", "g", "kg"];
-	var display_units = ["Tablespoon", "Teaspoon", "Cup", "Pinch", "Litre", "Millilitre", "Gram", "Milligram"]
+	var display_units = ["Tablespoon", "Teaspoon", "Cup", "Pinch", "Litre", "Millilitre", "Gram", "Kilogram"]
 
 	// Create input for ingredient quantity unit
 	var unit = document.createElement("SELECT");
