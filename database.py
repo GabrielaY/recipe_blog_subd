@@ -7,7 +7,7 @@ conn = sqlite3.connect(DB_NAME)
 conn.cursor().execute('''
 
 	CREATE TABLE IF NOT EXISTS users (
-		username TEXT PRIMARY KEY,
+		username TEXT PRIMARY KEY NOT NULL,
 		password TEXT NOT NULL
 	)
 
@@ -25,24 +25,21 @@ conn.cursor().execute('''
 		special_diet TEXT,
 		UNIQUE(owner, name),
 		FOREIGN KEY(owner) REFERENCES users(username)
-
 	)
 
 ''')
 conn.cursor().execute('''
 
-
 	CREATE TABLE IF NOT EXISTS ingredients (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			recipe_id INTEGER NOT NULL,
-			name TEXT NOT NULL,
-			quantity FLOAT(2, 1) NOT NULL,
-			units TEXT NOT NULL,
-			UNIQUE(recipe_id, name),
-			FOREIGN KEY(recipe_id) REFERENCES recipes(id)
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		recipe_id INTEGER NOT NULL,
+		name TEXT NOT NULL,
+		quantity FLOAT(4, 2) NOT NULL,
+		units TEXT NOT NULL,
+		UNIQUE(recipe_id, name),
+		FOREIGN KEY(recipe_id) REFERENCES recipes(id)
+	)
 
-		)
-	
 ''')
 
 conn.cursor().execute('''
@@ -56,7 +53,6 @@ conn.cursor().execute('''
 		UNIQUE(user, recipe_id),
 		FOREIGN KEY(user) REFERENCES users(username),
 		FOREIGN KEY(recipe_id) REFERENCES recipes(id)
-
 	)
 
 ''')
