@@ -164,12 +164,14 @@ def create_recipe():
 	# template the registration form
 	return render_template("create_recipe.html", form=form)
 
-@app.route("/editRecipe/<id>", methods=["GET", "POST"])
+@app.route("/editRecipe/<recipe_id>", methods=["GET", "POST"])
 @require_login
-def edit_recipe(id):
+def edit_recipe(recipe_id):
 	form = EditRecipeForm()
 
-	recipe = Recipe.find_by_id(id)
+	recipe = Recipe.find_by_id(recipe_id)
+
+	ingredients = Ingredient.get_by_recipe_id(recipe_id)
 
 	# set default username
 	form.name.data = recipe.name
@@ -185,10 +187,21 @@ def edit_recipe(id):
 		
 		recipe.save()
 
+		number_of_ingredients = int(request.form["number-of-ingredients"]);
+
+		for i in range(0, len(ingredients)):
+			index = str(ingredients[i].id)
+
+			ingredients[i].name = request.form["ingredient-name-" + index]
+			ingredients[i].quantity = request.form["ingredient-quantity-" + index]
+			ingredients[i].unit = request.form["ingredient-unit-" + index]
+
+			ingredients[i].save()
+
 		return redirect("/")
 
 	# template edit_profile form
-	return render_template("edit_recipe.html", form=form, recipe=recipe)
+	return render_template("edit_recipe.html", form = form, recipe = recipe, ingredients = ingredients)
 
 @app.route("/findByCategory/<name>", methods=["GET", "POST"])
 def find_recipe_by_category(name):

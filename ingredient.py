@@ -21,3 +21,14 @@ class Ingredient:
 			values = (self.name, self.quantity, self.units, self.id)
 			db.execute(
 				'''UPDATE ingredients SET name = ?, quantity = ?, units = ? WHERE id = ?''', values)
+
+	@staticmethod
+	def get_by_recipe_id(recipe_id):
+		with DB() as db:
+			rows = db.execute('''
+				SELECT * FROM ingredients WHERE recipe_id = ?
+			''', (recipe_id, )).fetchall()
+
+			if rows:
+				return [Ingredient(*row) for row in rows]
+
