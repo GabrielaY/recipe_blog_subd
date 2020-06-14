@@ -12,15 +12,17 @@ class User:
 	def create(self):
 		with DB() as db:
 			values = (self.username, self.password)
-			db.execute(
-				'''INSERT INTO users (username, password) VALUES (?, ?)''', values)
+			db.execute('''
+				INSERT INTO users (username, password) VALUES (?, ?)
+			''', values)
 
 	# update user info
 	def save(self):
 		with DB() as db:
 			values = (self.password, self.username)
-			db.execute(
-				'''UPDATE users SET password = ? WHERE username = ?''', values)
+			db.execute('''
+				UPDATE users SET password = ? WHERE username = ?
+			''', values)
 
 	# find user by email
 	@staticmethod
@@ -28,8 +30,9 @@ class User:
 		if not username:
 			return None
 		with DB() as db:
-			row = db.execute(
-				'''SELECT * FROM users WHERE username = ?''', (username,)).fetchone()
+			row = db.execute('''
+				SELECT * FROM users WHERE username = ?
+			''', (username,)).fetchone()
 			if row:
 				return User(*row)
 
