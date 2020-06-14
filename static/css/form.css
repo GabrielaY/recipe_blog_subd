@@ -66,3 +66,7 @@ ul {
 	margin: 5px;
 	padding: 5px;
 }
+
+.number-of-ingredients {
+	display: none;
+}
