@@ -1,0 +1,68 @@
+.form {
+	max-width: 800px;
+	text-align: center;
+	margin: 50px auto 0;
+}
+
+ul {
+	list-style-type: none;
+}
+
+.input, .button {
+	width: 300px;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #000;
+}
+
+.button {
+	font-weight: bold;
+	letter-spacing: 1px;
+	background-color: #eee;
+}
+
+.button:hover {
+	cursor: pointer;
+	background-color: #d6d6d6;
+}
+
+.link {
+	color: #000;
+	display: block;
+	margin-top: 20px;
+	text-decoration: none;
+}
+
+.link:hover {
+	text-decoration: underline;
+}
+
+.add-ingredient {
+	width: 150px;
+	padding: 5px;
+	border-radius: 5px;
+	letter-spacing: .5px;
+	border: 1px solid #000;
+}
+
+.add-ingredient:hover {
+	cursor: pointer;
+}
+
+.ingredients {
+	margin: 20px 0;
+}
+
+.ingredient-div {
+	margin: 5px 0;
+}
+
+.ingredient-input {
+	margin: 5px;
+	padding: 5px;
+}
+
+.ingredient-button {
+	margin: 5px;
+	padding: 5px;
+}

@@ -1,0 +1,36 @@
+* {
+	box-sizing: border-box;
+	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+}
+
+body {
+	top: 0;
+	margin: 0;
+	background-color: #ffd4f5;
+}
+
+.navbar {
+	width: 100%;
+	display: flex;
+	background-color: #4A4E69;
+	justify-content: space-between;
+	box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-right {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.navbar a {
+	color: #fff;
+	font-size: 20px;
+	padding: 15px 25px;
+	text-decoration: none;
+	transition: all ease-in-out 290ms;
+	border-bottom: 3px solid transparent;
+}
+
+.navbar a:hover {
+	border-bottom: 3px solid #fff;
+}
