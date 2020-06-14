@@ -7,6 +7,7 @@ import os
 # imports from .py files
 from user import User
 from recipe import Recipe
+from ingredient import Ingredient
 from form_config import check_password, RegistrationForm, LoginForm, EditProfileForm, CreateRecipeForm, EditRecipeForm
 
 
@@ -94,16 +95,10 @@ def edit_profile():
 	# get user, whose profile will be edited
 	user = User.find_by_username(session.get("USERNAME"))
 
-	# set default username
-	form.username.data = user.username
-
 	# if form is valid
 	if form.validate_on_submit():
 		# get user info and save it
-		user.username = request.form["username"]
-		session["USERNAME"] = user.username
-		if(request.form["password"] != ''):
-			user.password = User.hash_password(request.form["password"])
+		user.password = User.hash_password(request.form["password"])
 
 		user.save()
 
@@ -127,7 +122,7 @@ def create_recipe():
 		if not os.path.exists(path):
 			os.makedirs(path)
 
-		image.save(os.path.join(path, "KOZUNAK"))
+		image.save(os.path.join(path, request.form["name"]))
 
 		values = (
 			None,
@@ -136,10 +131,32 @@ def create_recipe():
 			request.form["description"],
 			request.form["instructions"],
 			request.form["category_name"],
-			"static/images/" + request.form["name"],
+			(UPLOAD_FOLDER + session.get("USERNAME") + '/' + request.form["name"]),
 			request.form["special_diet"]
 		)
+		
 		Recipe(*values).create()
+		
+		recipe_id = str(Recipe.get_recipe_id(session.get("USERNAME"), request.form["name"]))
+
+		number_of_ingredients = int(request.form["number_of_ingredients"]);
+
+		for i in range(0, number_of_ingredients):
+			index = str(i)
+			ingredient = {}
+			ingredient["name"] = request.form["ingredient-name-" + index]
+			ingredient["quantity"] = request.form["ingredient-quantity-" + index]
+			ingredient["unit"] = request.form["ingredient-unit-" + index]
+
+			values = (
+				None,
+				recipe_id,
+				ingredient["name"],
+				ingredient["quantity"],
+				ingredient["unit"]
+			)
+
+			Ingredient(*values).create()
 
 		# get the user and put him in the session
 		return redirect("/")

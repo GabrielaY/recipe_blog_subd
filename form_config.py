@@ -1,7 +1,7 @@
 from flask import request
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
-from wtforms import StringField, PasswordField, SelectField, validators
+from wtforms import StringField, PasswordField, SelectField, DecimalField, validators
 from wtforms.fields.html5 import EmailField, DateField
 from wtforms.validators import InputRequired, EqualTo, Length, NoneOf, ValidationError, Optional
 
@@ -19,8 +19,7 @@ class RegistrationForm(FlaskForm):
 	confirm = PasswordField("confirm", [EqualTo("password", message="Passwords must match!")])
 
 class EditProfileForm(FlaskForm):
-	username = StringField("username", [InputRequired()])
-	password = PasswordField("password", [Optional(), Length(min=8, message="Password must be at least 8 characters!")])
+	password = PasswordField("password", [InputRequired(), Length(min=8, message="Password must be at least 8 characters!")])
 	confirm = PasswordField("confirm", [EqualTo("password", message="Passwords must match!")])
 
 class LoginForm(FlaskForm):
@@ -33,6 +32,7 @@ class CreateRecipeForm(FlaskForm):
 	instructions = StringField("instructions", [InputRequired(message = "You must add instructions to your recipe!")])
 	category_name = SelectField('category', choices=[('apetizer', 'Apetizer'), ('dessert', 'Dessert'), ('soup', 'Soup')])
 	image = FileField('image')
+	number_of_ingredients = DecimalField('number_of_ingredients')
 	special_diet = SelectField('special_diet', choices=[('no_special_diet', 'No special diet'), ('vegan', 'Vegan'), ('vegeterian','Vegeterian')])
 
 class EditRecipeForm(FlaskForm):
