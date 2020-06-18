@@ -44,6 +44,13 @@ class Recipe:
 				UPDATE recipes SET name = ?, description = ?, instructions = ?, image_path = ? WHERE id = ?
 			''', values)
 
+	# delete recipe
+	def delete(id):
+		with DB() as db:
+			db.execute('''
+				DELETE FROM recipes WHERE id = ?
+			''', (id,))
+
 	@staticmethod
 	def get_recipe_id(owner, recipe_name):
 		with DB() as db:

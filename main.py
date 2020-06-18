@@ -164,6 +164,12 @@ def create_recipe():
 	# template the registration form
 	return render_template("create_recipe.html", form=form)
 
+@app.route("/deleteRecipe/<recipe_id>", methods=["GET", "POST"])
+@require_login
+def delete_recipe(recipe_id):
+	Recipe.delete(recipe_id);
+	return redirect("/")
+
 @app.route("/editRecipe/<recipe_id>", methods=["GET", "POST"])
 @require_login
 def edit_recipe(recipe_id):
@@ -214,9 +220,10 @@ def find_recipe_by_ingredient(name):
 	return render_template("recipes.html", recipes=Recipe.find_by_ingredient(name))
 
 @app.route("/recipes/<id>", methods=["GET","POST"])
+@require_login
 def display_recipe(id):
-
-	return render_template("recipe.html", recipe=Recipe.find_by_id(id))
+	user = User.find_by_username(session.get("USERNAME"))
+	return render_template("recipe.html", recipe=Recipe.find_by_id(id), ingredients=Ingredient.get_by_recipe_id(id), user=user)
 
 @app.route("/allRecipes", methods=["GET", "POST"])
 def find_all_recipes():
