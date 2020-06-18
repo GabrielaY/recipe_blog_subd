@@ -219,11 +219,11 @@ def display_recipe(id):
 	return render_template("recipe.html", recipe=Recipe.find_by_id(id))
 
 @app.route("/allRecipes", methods=["GET", "POST"])
-def find_all_recipes(name):
+def find_all_recipes():
 
-	return render_template("recipes.html", recipes=Recipe.find_by_category(name))
+	return render_template("recipes.html", recipes=Recipe.sort_all_by_alp())
 
 @app.route("/allRecipes/sortByRating", methods=["GET", "POST"])
-def sort_all_recipes(name):
+def sort_all_recipes_by_rating():
 
-	return render_template("recipes.html", recipes=Recipe.find_by_category(name))
+	return render_template("recipes.html", recipes=Recipe.sort_all_by_rating())

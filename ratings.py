@@ -29,9 +29,4 @@ class ratings:
             rows = db.execute('SELECT * FROM rating WHERE recipe_id = ?', values).fetchone()
             return rating
 
-	# get average of every rate
-	def avg_rates(self):
-        with DB() as db:
-        	values = (self.recipe_id)
-            rating_row = db.execute('SELECT AVG(rating) WHERE recipe_id = ?', values).fetchone()
-            return round(rating_row[0], 2)
+

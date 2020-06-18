@@ -63,6 +63,24 @@ class Recipe:
 			if row:
 				return Recipe(*row)
 
+	# sort by alphabetical order
+	@staticmethod
+	def sort_all_by_alp():
+		with DB() as db:
+			rows = db.execute(
+				'SELECT * FROM recipes ORDER BY recipes.name COLLATE NOCASE ASC',
+			).fetchall()
+			return [Recipe(*row) for row in rows]
+
+	# sort by rating 
+	@staticmethod
+	def sort_all_by_rating():
+		with DB() as db:
+			rows = db.execute(
+				'SELECT recipes.* FROM recipes JOIN ratings ON recipes.id == ratings.recipe_id ORDER BY ratings.rating DESC',
+			).fetchall()
+			return [Recipe(*row) for row in rows]
+
 	# find recipes by category
 	@staticmethod
 	def find_by_category(category_name):
