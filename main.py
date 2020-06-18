@@ -212,25 +212,24 @@ def edit_recipe(recipe_id):
 @app.route("/findByCategory/<name>", methods=["GET", "POST"])
 def find_recipe_by_category(name):
 
-	return render_template("recipes.html", recipes=Recipe.find_by_category(name))
+	return render_template("recipes.html", recipes=Recipe.find_by_category(name), user=User.find_by_username(session.get("USERNAME")))
 	
 @app.route("/findByIngredient/<name>", methods=["GET", "POST"])
 def find_recipe_by_ingredient(name):
 
-	return render_template("recipes.html", recipes=Recipe.find_by_ingredient(name))
+	return render_template("recipes.html", recipes=Recipe.find_by_ingredient(name), user=User.find_by_username(session.get("USERNAME")))
 
 @app.route("/recipes/<id>", methods=["GET","POST"])
 @require_login
 def display_recipe(id):
-	user = User.find_by_username(session.get("USERNAME"))
-	return render_template("recipe.html", recipe=Recipe.find_by_id(id), ingredients=Ingredient.get_by_recipe_id(id), user=user)
+	return render_template("recipe.html", recipe=Recipe.find_by_id(id), ingredients=Ingredient.get_by_recipe_id(id), user=User.find_by_username(session.get("USERNAME")))
 
 @app.route("/allRecipes", methods=["GET", "POST"])
 def find_all_recipes():
 
-	return render_template("recipes.html", recipes=Recipe.sort_all_by_alp())
+	return render_template("recipes.html", recipes=Recipe.sort_all_by_alp(), user=User.find_by_username(session.get("USERNAME")))
 
 @app.route("/allRecipes/sortByRating", methods=["GET", "POST"])
 def sort_all_recipes_by_rating():
 
-	return render_template("recipes.html", recipes=Recipe.sort_all_by_rating())
+	return render_template("recipes.html", recipes=Recipe.sort_all_by_rating(), user=User.find_by_username(session.get("USERNAME")))

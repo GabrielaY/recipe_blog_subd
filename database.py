@@ -24,7 +24,7 @@ conn.cursor().execute('''
 		image_path TEXT NOT NULL,
 		special_diet TEXT,
 		UNIQUE(owner, name),
-		FOREIGN KEY(owner) REFERENCES users(username)
+		FOREIGN KEY(owner) REFERENCES users(username) ON DELETE CASCADE
 	)
 
 ''')
@@ -37,7 +37,7 @@ conn.cursor().execute('''
 		quantity FLOAT(4, 2) NOT NULL,
 		units TEXT NOT NULL,
 		UNIQUE(recipe_id, name),
-		FOREIGN KEY(recipe_id) REFERENCES recipes(id)
+		FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
 	)
 
 ''')
@@ -52,7 +52,7 @@ conn.cursor().execute('''
 		CHECK (rating >= 1 AND rating <= 5),
 		UNIQUE(user, recipe_id),
 		FOREIGN KEY(user) REFERENCES users(username),
-		FOREIGN KEY(recipe_id) REFERENCES recipes(id)
+		FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
 	)
 
 ''')
