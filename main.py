@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from datetime import datetime
 from functools import wraps
 import os
+import sqlite3
 
 # imports from .py files
 from user import User
@@ -114,52 +115,67 @@ def create_recipe():
 
 	# if form is valid
 	if form.validate_on_submit():
-
-		image = request.files["image"]
-		path = os.path.join(UPLOAD_FOLDER, session.get("USERNAME"))
-
-		# Check if path exists and create one if it doesn"t
-		if not os.path.exists(path):
-			os.makedirs(path)
-
-		image.save(os.path.join(path, request.form["name"]))
-
-		values = (
-			None,
-			session.get("USERNAME"),
-			request.form["name"],
-			request.form["description"],
-			request.form["instructions"],
-			request.form["category_name"],
-			(UPLOAD_FOLDER + session.get("USERNAME") + '/' + request.form["name"]),
-			request.form["special_diet"]
-		)
 		
-		Recipe(*values).create()
-		
-		recipe_id = str(Recipe.get_recipe_id(session.get("USERNAME"), request.form["name"]))
+		sql = sqlite3.connect("database.db")
 
-		number_of_ingredients = int(request.form["number_of_ingredients"]);
+		try:
 
-		for i in range(0, number_of_ingredients):
-			index = str(i)
-			ingredient = {}
-			ingredient["name"] = request.form["ingredient-name-" + index]
-			ingredient["quantity"] = request.form["ingredient-quantity-" + index]
-			ingredient["unit"] = request.form["ingredient-unit-" + index]
+			conn = sql.cursor()
 
 			values = (
 				None,
-				recipe_id,
-				ingredient["name"],
-				ingredient["quantity"],
-				ingredient["unit"]
+				session.get("USERNAME"),
+				request.form["name"],
+				request.form["description"],
+				request.form["instructions"],
+				request.form["category_name"],
+				(UPLOAD_FOLDER + session.get("USERNAME") + '/' + request.form["name"]),
+				request.form["special_diet"]
 			)
+			
+			Recipe(*values).create(conn)
 
-			Ingredient(*values).create()
+			recipe_id = str(Recipe.get_recipe_id(session.get("USERNAME"), request.form["name"]))
 
-		# get the user and put him in the session
-		return redirect("/")
+			number_of_ingredients = int(request.form["number_of_ingredients"]);
+
+			for i in range(0, number_of_ingredients):
+				index = str(i)
+				ingredient = {}
+				ingredient["name"] = request.form["ingredient-name-" + index]
+				ingredient["quantity"] = request.form["ingredient-quantity-" + index]
+				ingredient["unit"] = request.form["ingredient-unit-" + index]
+
+				values = (
+					None,
+					recipe_id,
+					ingredient["name"],
+					ingredient["quantity"],
+					ingredient["unit"]
+				)
+
+				Ingredient(*values).create(conn)
+
+			image = request.files["image"]
+			path = os.path.join(UPLOAD_FOLDER, session.get("USERNAME"))
+
+			# Check if path exists and create one if it doesn"t
+			if not os.path.exists(path):
+				os.makedirs(path)
+
+			image.save(os.path.join(path, request.form["name"]))
+
+			sql.commit()
+
+			# get the user and put him in the session
+			return redirect("/")
+
+		except sql.Error:
+
+			sql.rollback()
+
+			return redirect("/error")
+
 
 	# template the registration form
 	return render_template("create_recipe.html", form=form)
@@ -186,25 +202,38 @@ def edit_recipe(recipe_id):
 
 	# if form is valid
 	if form.validate_on_submit():
-		# get user info and save it
-		recipe.name = request.form["name"]
-		recipe.description = request.form["description"]
-		recipe.instructions = request.form["instructions"]
-		
-		recipe.save()
 
-		number_of_ingredients = int(request.form["number-of-ingredients"]);
+		sql = sqlite3.connect("database.db")
 
-		for i in range(0, len(ingredients)):
-			index = str(ingredients[i].id)
+		try:
 
-			ingredients[i].name = request.form["ingredient-name-" + index]
-			ingredients[i].quantity = request.form["ingredient-quantity-" + index]
-			ingredients[i].unit = request.form["ingredient-unit-" + index]
+			conn = sql.cursor()
 
-			ingredients[i].save()
+			# get user info and save it
+			recipe.name = request.form["name"]
+			recipe.description = request.form["description"]
+			recipe.instructions = request.form["instructions"]
+			
+			recipe.save(conn)
 
-		return redirect("/")
+			number_of_ingredients = int(request.form["number-of-ingredients"]);
+
+			for i in range(0, len(ingredients)):
+				index = str(ingredients[i].id)
+
+				ingredients[i].name = request.form["ingredient-name-" + index]
+				ingredients[i].quantity = request.form["ingredient-quantity-" + index]
+				ingredients[i].unit = request.form["ingredient-unit-" + index]
+
+				ingredients[i].save(conn)
+
+			return redirect("/")
+
+		except sql.Error:
+
+			conn.rollback()
+
+			return redirect("/error")
 
 	# template edit_profile form
 	return render_template("edit_recipe.html", form = form, recipe = recipe, ingredients = ingredients)

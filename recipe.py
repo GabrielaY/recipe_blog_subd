@@ -13,36 +13,34 @@ class Recipe:
 		self.special_diet = special_diet;
 
 	# add to database
-	def create(self):
-		with DB() as db:
-			values = (
-				self.owner,
-				self.name,
-				self.description,
-				self.instructions,
-				self.category_name,
-				self.image_path,
-				self.special_diet
-			)
-			
-			db.execute('''
-				INSERT INTO 
-					recipes (owner, name, description, instructions, category_name, image_path, special_diet) 
-				VALUES (?, ?, ?, ?, ?, ?, ?)
-			''', values)
+	def create(self, db):
+		values = (
+			self.owner,
+			self.name,
+			self.description,
+			self.instructions,
+			self.category_name,
+			self.image_path,
+			self.special_diet
+		)
+		
+		db.execute('''
+			INSERT INTO 
+				recipes (owner, name, description, instructions, category_name, image_path, special_diet) 
+			VALUES (?, ?, ?, ?, ?, ?, ?)
+		''', values)
 
 	# update recipe info
-	def save(self):
-		with DB() as db:
-			values = (
-				self.name,
-				self.description,
-				self.instructions,
-				self.image_path,self.id
-			)
-			db.execute('''
-				UPDATE recipes SET name = ?, description = ?, instructions = ?, image_path = ? WHERE id = ?
-			''', values)
+	def save(self, db):
+		values = (
+			self.name,
+			self.description,
+			self.instructions,
+			self.image_path,self.id
+		)
+		db.execute('''
+			UPDATE recipes SET name = ?, description = ?, instructions = ?, image_path = ? WHERE id = ?
+		''', values)
 
 	# delete recipe
 	def delete(id):

@@ -9,18 +9,16 @@ class Ingredient:
 		self.quantity = quantity;
 		self.units = units;
 
-	def create(self):
-		with DB() as db:
-			values = (self.recipe_id, self.name, self.quantity, self.units)
-			db.execute(
-				'''INSERT INTO ingredients (recipe_id, name, quantity, units) VALUES (?, ?, ?, ?)''', values)
+	def create(self, db):
+		values = (self.recipe_id, self.name, self.quantity, self.units)
+		db.execute(
+			'''INSERT INTO ingredients (recipe_id, name, quantity, units) VALUES (?, ?, ?, ?)''', values)
 
 	# update ingredient info
-	def save(self):
-		with DB() as db:
-			values = (self.name, self.quantity, self.units, self.id)
-			db.execute(
-				'''UPDATE ingredients SET name = ?, quantity = ?, units = ? WHERE id = ?''', values)
+	def save(self, db):
+		values = (self.name, self.quantity, self.units, self.id)
+		db.execute(
+			'''UPDATE ingredients SET name = ?, quantity = ?, units = ? WHERE id = ?''', values)
 
 	@staticmethod
 	def get_by_recipe_id(recipe_id):

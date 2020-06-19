@@ -56,6 +56,7 @@ conn.cursor().execute('''
 	)
 
 ''')
+
 conn.commit()
 
 class DB:
