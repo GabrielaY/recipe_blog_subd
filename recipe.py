@@ -84,7 +84,7 @@ class Recipe:
 	def sort_all_by_rating():
 		with DB() as db:
 			rows = db.execute(
-				'SELECT recipes.* FROM recipes JOIN ratings ON recipes.id == ratings.recipe_id ORDER BY ratings.rating DESC',
+				'SELECT recipes.* FROM recipes LEFT JOIN ratings ON recipes.id == ratings.recipe_id GROUP BY recipes.id ORDER BY ratings.rating DESC',
 			).fetchall()
 			return [Recipe(*row) for row in rows]
 

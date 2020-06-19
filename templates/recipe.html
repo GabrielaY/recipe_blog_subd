@@ -48,7 +48,7 @@
 						<button onclick="window.location.href='/deleteRecipe/{{recipe.id}}'">Delete</button>
 					{% endif %}
 				</section>
-				<img src="static/images/{{recipe.owner}}/{{recipe.name}}">
+				<img src="{{ url_for('static', filename='images/' + recipe.owner + '/' + recipe.name) }}" alt="{{recipe.name}}-{{recipe.owner}} recipe">
 				
 			</div>
 		</section>
